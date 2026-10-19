@@ -68,35 +68,11 @@
             }
         }
 
-        /* Vùng chứa ảnh đại diện */
-        .avatar-wrapper {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            margin-bottom: 15px;
-        }
-
-        .avatar-wrapper:hover .avatar {
-            opacity: 0.85;
-            transform: scale(0.95);
-            border-color: #ff758c;
-        }
-
-        .avatar {
-            width: 95px;
-            height: 95px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #ff4b6e;
-            box-shadow: 0 4px 10px rgba(255, 75, 110, 0.3);
-            transition: all 0.3s ease;
-        }
-
         h1 {
             font-family: 'Dancing Script', cursive;
             color: #ff4b6e;
-            font-size: 2.5rem;
-            margin-bottom: 15px;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
         }
 
         .message {
@@ -135,7 +111,7 @@
             z-index: 20;
         }
 
-@keyframes burst {
+        @keyframes burst {
             0% {
                 transform: translate(0, 0) scale(0.5);
                 opacity: 1;
@@ -149,15 +125,8 @@
 </head>
 <body>
 
-    <!-- Khung thiệp chính -->
+    <!-- Khung thiệp chính (Đã loại bỏ phần ảnh đại diện) -->
     <div class="card-container">
-        
-        <!-- Click vào đây để chọn ảnh từ máy tính của bạn -->
-        <div class="avatar-wrapper" onclick="triggerFileInput()" title="Bấm để chọn ảnh từ máy">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" alt="Avatar" class="avatar" id="avatar-image">
-            <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileSelect(this)">
-        </div>
-
         <h1>Chúc Mừng 20/10!</h1>
         <div class="message" id="typing-text"></div>
         <button class="btn-love" id="btnSurprise">Bấm vào đây nhé ❤️</button>
@@ -168,23 +137,6 @@
         const content = "Chúc một nửa thế giới luôn luôn xinh đẹp, ngập tràn hạnh phúc và nở nụ cười rạng rỡ mỗi ngày. Mong rằng mọi điều tốt đẹp nhất sẽ đến với bạn trong ngày đặc biệt 20/10 này! ✨";
 
         let index = 0;
-
-        // Mở hộp thoại chọn ảnh từ máy
-        function triggerFileInput() {
-            document.getElementById("file-input").click();
-        }
-
-        // Đọc và thay đổi ảnh đại diện
-        function handleFileSelect(input) {
-            const avatarImage = document.getElementById("avatar-image");
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    avatarImage.src = e.target.result;
-                };
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
 
         // Hiệu ứng gõ chữ
         function typeWriter() {
