@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng 20/10</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Hiệu ứng tim/hoa bay nền */
+        .heart-bg {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 20px;
+            animation: flyUp 5s linear infinite;
+            bottom: -10vh;
+            z-index: 0;
+        }
+
+        @keyframes flyUp {
+            0% {
+                transform: translateY(0) scale(0.8);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-110vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Khung thiệp */
+        .card-container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popUp {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        /* Vùng chứa ảnh đại diện */
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .avatar-wrapper:hover .avatar {
+            opacity: 0.85;
+            transform: scale(0.95);
+            border-color: #ff758c;
+        }
+
+        .avatar {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff4b6e;
+            box-shadow: 0 4px 10px rgba(255, 75, 110, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff4b6e;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            font-size: 1rem;
+            color: #444;
+            line-height: 1.6;
+            min-height: 100px;
+            margin-bottom: 25px;
+            white-space: pre-line;
+        }
+
+        .btn-love {
+            background: linear-gradient(45deg, #ff4b6e, #ff758c);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 75, 110, 0.4);
+            transition: 0.3s ease;
+        }
+
+        .btn-love:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 75, 110, 0.6);
+        }
+
+        /* Hiệu ứng bùng nổ hoa/tim */
+        .flower-popup {
+            position: absolute;
+            font-size: 24px;
+            animation: burst 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+@keyframes burst {
+            0% {
+                transform: translate(0, 0) scale(0.5);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--dx), var(--dy)) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Khung thiệp chính -->
+    <div class="card-container">
+        
+        <!-- Click vào đây để chọn ảnh từ máy tính của bạn -->
+        <div class="avatar-wrapper" onclick="triggerFileInput()" title="Bấm để chọn ảnh từ máy">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200" alt="Avatar" class="avatar" id="avatar-image">
+            <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="handleFileSelect(this)">
+        </div>
+
+        <h1>Chúc Mừng 20/10!</h1>
+        <div class="message" id="typing-text"></div>
+        <button class="btn-love" id="btnSurprise">Bấm vào đây nhé ❤️</button>
+    </div>
+
+    <script>
+        // Nội dung lời chúc
+        const content = "Chúc một nửa thế giới luôn luôn xinh đẹp, ngập tràn hạnh phúc và nở nụ cười rạng rỡ mỗi ngày. Mong rằng mọi điều tốt đẹp nhất sẽ đến với bạn trong ngày đặc biệt 20/10 này! ✨";
+
+        let index = 0;
+
+        // Mở hộp thoại chọn ảnh từ máy
+        function triggerFileInput() {
+            document.getElementById("file-input").click();
+        }
+
+        // Đọc và thay đổi ảnh đại diện
+        function handleFileSelect(input) {
+            const avatarImage = document.getElementById("avatar-image");
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Hiệu ứng gõ chữ
+        function typeWriter() {
+            if (index < content.length) {
+                document.getElementById("typing-text").innerHTML += content.charAt(index);
+                index++;
+                setTimeout(typeWriter, 40);
+            }
+        }
+
+        // Tạo tim/hoa bay nền
+        function createFloatingHearts() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.classList.add("heart-bg");
+                heart.innerHTML = Math.random() > 0.5 ? "❤️" : "🌸";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+                document.body.appendChild(heart);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 5000);
+            }, 300);
+        }
+
+        // Hiệu ứng pháo hoa bùng nổ
+        function triggerSurprise() {
+            const symbols = ["🌸", "💖", "💐", "✨", "🌷", "❤️"];
+            for (let i = 0; i < 25; i++) {
+                const flower = document.createElement("div");
+                flower.classList.add("flower-popup");
+                flower.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+
+                flower.style.left = "50%";
+                flower.style.top = "50%";
+
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 200 + 50;
+                const dx = Math.cos(angle) * distance;
+                const dy = Math.sin(angle) * distance;
+
+                flower.style.setProperty('--dx', `${dx}px`);
+                flower.style.setProperty('--dy', `${dy}px`);
+
+                document.body.appendChild(flower);
+
+                setTimeout(() => {
+                    flower.remove();
+                }, 1000);
+            }
+        }
+
+        // Khởi chạy khi load xong trang
+        window.addEventListener("DOMContentLoaded", () => {
+            setTimeout(typeWriter, 800);
+            createFloatingHearts();
+
+            const btn = document.getElementById("btnSurprise");
+            if (btn) {
+                btn.addEventListener("click", triggerSurprise);
+            }
+        });
+    </script>
+</body>
+</html>
